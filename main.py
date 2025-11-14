@@ -1,9 +1,19 @@
 import pygame
 from snake import Snake
 
+# --- CONSTANTS --- #
+SCREEN_WIDTH = 1280
+SCREEN_HEIGHT = 720
+GRID_SIZE = 20
+
+# Colors
+COLOR_BACKGROUND = (34, 40, 49)
+COLOR_HEAD = (238, 238, 238)
+COLOR_BODY = (0, 173, 181)
+
 # pygame setup
 pygame.init()
-screen = pygame.display.set_mode((1280, 720))
+screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption('Snake Byte')
 
 snake = Snake()
@@ -12,20 +22,20 @@ move_interval = 1.0 / snake.speed
 move_timer = 0.0
 dt = 0  # delta time in seconds
 
-gameOver = False
+game_over = False
 
 
 # game loop
-while not gameOver:
+while not game_over:
     # poll for events
     # pygame.QUIT, user clicked X to close your window
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
-            gameOver = True
+            game_over = True
 
     move_timer += dt
 
-    screen.fill(pygame.Color(34, 40, 49))
+    screen.fill(pygame.Color(COLOR_BACKGROUND))
 
     if move_timer >= move_interval:
         snake.move()
@@ -35,11 +45,11 @@ while not gameOver:
     for i, section in enumerate(snake.body):
         x, y = section
         if i == 0:
-            color = (238, 238, 238)
+            color = COLOR_HEAD
         else:
-            color = (0, 173, 181)
+            color = COLOR_BODY
 
-        pygame.draw.rect(screen, color, [x*20, y*20, 20, 20])
+        pygame.draw.rect(screen, color, [x * GRID_SIZE, y * GRID_SIZE, GRID_SIZE, GRID_SIZE])
 
     # handle direction change
     keys = pygame.key.get_pressed()
