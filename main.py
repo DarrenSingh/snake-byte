@@ -55,13 +55,13 @@ while not game_over:
     # handle direction change
     keys = pygame.key.get_pressed()
     if keys[pygame.K_w]:
-        snake.change_direction(pygame.Vector2(0, -1))
+        snake.change_direction("UP")
     elif keys[pygame.K_s]:
-        snake.change_direction(pygame.Vector2(0, 1))
+        snake.change_direction("DOWN")
     elif keys[pygame.K_a]:
-        snake.change_direction(pygame.Vector2(-1, 0))
+        snake.change_direction("LEFT")
     elif keys[pygame.K_d]:
-        snake.change_direction(pygame.Vector2(1, 0))
+        snake.change_direction("RIGHT")
 
     pygame.display.update()
     pygame.display.flip()

@@ -31,12 +31,24 @@ class Snake:
         """
         self.is_growing = True
 
-    def change_direction(self, new_direction: Vector2):
+    def change_direction(self, direction_str: str):
         """
-        Updates the snakes direction, while preventing 180-degree turns
-        :param new_direction: The new direction to move
-        :type new_direction: Vector2
+        Updates the snakes direction based on a string command ("UP","DOWN","LEFT","RIGHT"),
+        while preventing 180-degree turns
+        :param direction_str: The new direction to move
+        :type direction_str: str
         """
+        new_direction = self.direction
+
+        if direction_str == "UP":
+            new_direction = Vector2(0, -1)
+        elif direction_str == "DOWN":
+            new_direction = Vector2(0, 1)
+        elif direction_str == "LEFT":
+            new_direction = Vector2(-1, 0)
+        elif direction_str == "RIGHT":
+            new_direction = Vector2(1, 0)
+
         if new_direction != self.direction * -1:
             self.direction = new_direction
 
