@@ -17,8 +17,9 @@ screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption('Snake Byte')
 
 snake = Snake()
+snake_speed = 15
 clock = pygame.time.Clock()
-move_interval = 1.0 / snake.speed
+move_interval = 1.0 / snake_speed
 move_timer = 0.0
 dt = 0  # delta time in seconds
 

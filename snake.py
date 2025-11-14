@@ -11,7 +11,6 @@ class Snake:
         self.body = deque([Vector2(10, 10), Vector2(9, 10), Vector2(8, 10)])
         self.direction = Vector2(1, 0)
         self.is_growing = False
-        self.speed = 15
 
     def move(self):
         """
@@ -49,11 +48,3 @@ class Snake:
         """
         if self.body.count(self.body[0]) > 1:
             return True
-
-    def adjust_speed(self, speed_adjustment: int):
-        """
-        Adjust the speed at which the snake moves, relative to the previous speed
-        :param speed_adjustment:
-        :type speed_adjustment: int
-        """
-        self.speed += speed_adjustment
