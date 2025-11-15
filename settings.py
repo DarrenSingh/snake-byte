@@ -1,0 +1,13 @@
+# Screen settings
+SCREEN_WIDTH = 1280
+SCREEN_HEIGHT = 720
+GRID_SIZE = 20
+
+# Colors
+COLOR_BACKGROUND = (34, 40, 49)
+COLOR_HEAD = (238, 238, 238)
+COLOR_BODY = (0, 173, 181)
+
+# Game settings
+START_SNAKE_SPEED = 15
+FPS = 60
