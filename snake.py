@@ -23,7 +23,7 @@ class Snake:
 
         if not self.is_growing:
             self.body.pop()
-        self.is_growing = False
+            self.is_growing = False
 
     def grow(self):
         """
