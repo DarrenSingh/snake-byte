@@ -2,6 +2,7 @@ import sys
 import pygame
 from settings import *
 from snake import Snake
+from item_manager import ItemManager
 
 
 class Game:
@@ -17,6 +18,7 @@ class Game:
         pygame.display.set_caption('Snake Byte')
         self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
         self.snake = Snake()
+        self.item_manager = ItemManager([SCREEN_WIDTH, SCREEN_HEIGHT])
 
         self.clock = pygame.time.Clock()
         self.move_interval = 1.0 / START_SNAKE_SPEED
@@ -64,6 +66,16 @@ class Game:
             self.snake.move()
             self.move_timer -= self.move_interval
 
+        # handle collision
+        #   check if snake has collided with item through item_manager
+        if len(self.item_manager.items) == 0:
+            self.item_manager.spawn_item()
+        else:
+            self.item_manager.update(self.snake)
+
+        if self.snake.check_collision():
+            self.game_over = True
+
         pygame.display.update()
 
     def draw(self):
@@ -72,13 +84,20 @@ class Game:
         """
         self.screen.fill(pygame.Color(COLOR_BACKGROUND))
 
+        # draw snake
         for i, section in enumerate(self.snake.body):
             x, y = section
             if i == 0:
                 color = COLOR_HEAD
             else:
                 color = COLOR_BODY
-            pygame.draw.rect(self.screen, color, [x * GRID_SIZE, y * GRID_SIZE, GRID_SIZE, GRID_SIZE])
+            pygame.draw.rect(self.screen, color, [x, y, GRID_SIZE, GRID_SIZE])
+
+        # draw items
+        #   get items from item_manager and draw to screen
+        for item in self.item_manager.items:
+            x, y = item.position
+            pygame.draw.rect(self.screen, item.color, [x, y, GRID_SIZE, GRID_SIZE])
 
         pygame.display.flip()
         self.dt = self.clock.tick(FPS) / 1000

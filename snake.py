@@ -1,5 +1,6 @@
 from collections import deque
 from pygame import Vector2
+from settings import *
 
 
 class Snake:
@@ -8,8 +9,8 @@ class Snake:
     """
 
     def __init__(self):
-        self.body = deque([Vector2(10, 10), Vector2(9, 10), Vector2(8, 10)])
-        self.direction = Vector2(1, 0)
+        self.body = deque([Vector2(200, 200), Vector2(180, 200), Vector2(160, 200)])
+        self.direction = Vector2(GRID_SIZE, 0)
         self.is_growing = False
 
     def move(self):
@@ -23,7 +24,7 @@ class Snake:
 
         if not self.is_growing:
             self.body.pop()
-            self.is_growing = False
+        self.is_growing = False
 
     def grow(self):
         """
@@ -41,13 +42,13 @@ class Snake:
         new_direction = self.direction
 
         if direction_str == "UP":
-            new_direction = Vector2(0, -1)
+            new_direction = Vector2(0, -GRID_SIZE)
         elif direction_str == "DOWN":
-            new_direction = Vector2(0, 1)
+            new_direction = Vector2(0, GRID_SIZE)
         elif direction_str == "LEFT":
-            new_direction = Vector2(-1, 0)
+            new_direction = Vector2(-GRID_SIZE, 0)
         elif direction_str == "RIGHT":
-            new_direction = Vector2(1, 0)
+            new_direction = Vector2(GRID_SIZE, 0)
 
         if new_direction != self.direction * -1:
             self.direction = new_direction
