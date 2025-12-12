@@ -3,6 +3,7 @@ import pygame
 from settings import *
 from snake import Snake
 from item_manager import ItemManager
+from ui import HUD
 
 
 class Game:
@@ -18,13 +19,23 @@ class Game:
         pygame.display.set_caption('Snake Byte')
         self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
         self.snake = Snake()
-        self.item_manager = ItemManager([SCREEN_WIDTH, SCREEN_HEIGHT])
+        self.item_manager = ItemManager(self, self.snake)
+        self.hud = HUD(self.screen)
 
         self.clock = pygame.time.Clock()
         self.move_interval = 1.0 / START_SNAKE_SPEED
         self.move_timer = 0.0
         self.dt = 0  # delta time in seconds
+        self.game_timer = 0  # total time elapsed
+
         self.game_over = False
+        self.score = 0
+        self.effect_timers = {
+            'ghost': 0,
+            'speed': 0,
+            'turtle': 0,
+            'multiplier': 0,
+        }
 
     def run(self):
         """
@@ -61,20 +72,19 @@ class Game:
         Updates all game logic
         """
         self.move_timer += self.dt
+        self.game_timer += self.dt
+        self.score += self.dt * 1.5
 
         if self.move_timer >= self.move_interval:
             self.snake.move()
+            self.game_over = self.snake.check_collision()
             self.move_timer -= self.move_interval
 
-        # handle collision
-        #   check if snake has collided with item through item_manager
+        # handle item collision
         if len(self.item_manager.items) == 0:
             self.item_manager.spawn_item()
         else:
-            self.item_manager.update(self.snake)
-
-        if self.snake.check_collision():
-            self.game_over = True
+            self.item_manager.update()
 
         pygame.display.update()
 
@@ -83,21 +93,12 @@ class Game:
         Handles drawing game assets to the screen
         """
         self.screen.fill(pygame.Color(COLOR_BACKGROUND))
-
-        # draw snake
-        for i, section in enumerate(self.snake.body):
-            x, y = section
-            if i == 0:
-                color = COLOR_HEAD
-            else:
-                color = COLOR_BODY
-            pygame.draw.rect(self.screen, color, [x, y, GRID_SIZE, GRID_SIZE])
-
-        # draw items
-        #   get items from item_manager and draw to screen
-        for item in self.item_manager.items:
-            x, y = item.position
-            pygame.draw.rect(self.screen, item.color, [x, y, GRID_SIZE, GRID_SIZE])
+        self.hud.draw(self.score, self.game_timer)
+        self.snake.draw(self.screen)
+        self.item_manager.draw(self.screen)
 
         pygame.display.flip()
         self.dt = self.clock.tick(FPS) / 1000
+
+    def add_score(self, score):
+        self.score += score

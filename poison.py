@@ -1,12 +1,12 @@
 from item import Item
 
 
-class Food(Item):
+class Poison(Item):
 
     def __init__(self, position):
         super().__init__(position)
-        self.color = (203, 243, 187)
-        self.score = 15
+        self.color = (255, 46, 99)
+        self.score = -10
 
     def apply_effect(self, game, snake):
-        snake.grow()
+        snake.shrink()
