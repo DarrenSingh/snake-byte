@@ -43,8 +43,8 @@ class Game:
         """
         while not self.game_over:
             self.handle_events()
-            self.draw()
             self.update()
+            self.draw()
 
         pygame.quit()
         sys.exit()
@@ -77,7 +77,8 @@ class Game:
 
         if self.move_timer >= self.move_interval:
             self.snake.move()
-            self.game_over = self.snake.check_collision()
+            if self.snake.check_collision():
+                self.game_over = True
             self.move_timer -= self.move_interval
 
         # handle item collision
