@@ -9,7 +9,7 @@ class Snake:
     """
 
     def __init__(self):
-        self.body = deque([Vector2(5, 10), Vector2(4, 10), Vector2(3, 10)])
+        self.body = deque([Vector2(6, 10), Vector2(5, 10), Vector2(4, 10), Vector2(3, 10)])
         self.direction = Vector2(1, 0)
         self.is_growing = False
 
