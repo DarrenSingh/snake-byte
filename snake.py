@@ -1,4 +1,6 @@
 from collections import deque
+from itertools import islice
+
 from pygame import Vector2, draw
 from settings import *
 
@@ -74,12 +76,22 @@ class Snake:
 
     def check_collision(self):
         """
-        Checks if head Vector2 coordinate exists in the rest of the body deque collection
-        :return: if the snakes head collided with its body
+        Checks if snake has collided with itself for the walls of the playing area,
+        Vector2 coordinate exists in the rest of the body deque collection
+        :return: if the snakes head collided with walls, or it's body
         :rtype: bool
         """
-        if self.body.count(self.body[0]) > 1:
+        head = self.body[0]
+        head_x, head_y = head
+        min_y = (HUD_HEIGHT // GRID_SIZE) -1
+
+        if not ( 0 <= head_x <= PLAYABLE_GRID_WIDTH_COUNT):
             return True
+        if not ( min_y <= head_y <= PLAYABLE_GRID_HEIGHT_COUNT):
+            return True
+        if head in islice(self.body, 1, None):
+            return True
+        return False
 
     def is_healthy(self):
         return len(self.body) > 1
